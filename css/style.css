@@ -1,0 +1,490 @@
+/* BirdBrain. One stylesheet, plus print.css for paper. System fonts only.
+   Made for a laptop first, and it must still work on a phone 375px wide.
+   Sizes are in rem. The base size is set large on purpose (see html below): many of the people
+   who use this read without their glasses in a busy kitchen. Do not go below 0.85rem for any text
+   (the bottom button labels are the one exception), and keep anything you can press at least 44px tall. */
+:root {
+  --bg: #fff6e8;
+  --bg-2: #fbe9cc;
+  --card: #fffdf8;
+  --ink: #3a2314;
+  --muted: #574232;
+  --line: #ecd9bd;
+  --accent: #b8480f;
+  --accent-dark: #8f3608;
+  --accent-ink: #ffffff;
+  --cranberry: #8f1f2e;
+  --gold: #e3a21a;
+  --leaf: #5b7c3a;
+  --danger: #a3261b;
+  --ok: #2f6b3a;
+  --warn-bg: #fff3cd;
+  --warn-line: #e6cf7a;
+  --tab-h: 70px;
+  --page: 840px;
+  --radius: 12px;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+html { font-size: 112.5%; } /* 18px where the browser default is 16px; still follows the reader's own setting */
+[hidden] { display: none !important; }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  /* a very light scatter of dots, like a tablecloth */
+  background-image: radial-gradient(rgba(184, 72, 15, 0.06) 1.2px, transparent 1.4px);
+  background-size: 22px 22px;
+  color: var(--ink);
+  line-height: 1.5;
+  padding-bottom: calc(var(--tab-h) + 16px);
+}
+
+/* ---------- header ---------- */
+.app-header {
+  background: linear-gradient(120deg, #7a1424 0%, #a8380f 55%, #b85a08 100%);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(80, 30, 10, 0.25);
+  border-bottom: 3px solid var(--gold);
+}
+.app-header::after {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.16;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='80' viewBox='0 0 240 80'%3E%3Cg fill='white'%3E%3Cpath d='M20 55 C28 20 70 18 82 42 C62 62 38 66 20 55Z'/%3E%3Cpath d='M110 30 C118 6 150 6 160 26 C146 42 124 44 110 30Z'/%3E%3Cpath d='M180 60 C186 36 214 32 226 50 C212 66 194 70 180 60Z'/%3E%3C/g%3E%3C/svg%3E") right center / 240px 80px repeat-x;
+}
+.app-header-inner {
+  position: relative; z-index: 1;
+  max-width: var(--page); margin: 0 auto; padding: 8px 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap;
+}
+.brand-wrap { margin: 0; font-size: 1rem; font-weight: 400; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-logo { display: inline-block; width: 46px; height: 46px; padding: 2px; border-radius: 50%; background: #fff6e8; flex: none; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); }
+.brand-logo svg { width: 100%; height: 100%; display: block; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+.brand-name { font: 700 1.5rem var(--serif); letter-spacing: 0.3px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); }
+.brand-tag { font-size: 0.85rem; }
+.header-side { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.countdown-pill { margin: 0; background: rgba(40, 10, 5, 0.28); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 999px; padding: 4px 12px; font-size: 0.9rem; white-space: nowrap; }
+.risk-chip { background: var(--gold); color: #3a2314; border: 1px solid #b97f0a; border-radius: 999px; padding: 4px 14px; font-size: 0.95rem; font-weight: 700; }
+.risk-chip:hover { background: #f0b432; }
+/* On a phone the header must not push the page down: no tagline, a small logo, and the two pills on one short row. */
+@media (max-width: 520px) {
+  .app-header-inner { padding: 6px 16px; gap: 4px 12px; }
+  .brand-tag { display: none; }
+  .brand-logo { width: 32px; height: 32px; }
+  .brand-name { font-size: 1.25rem; }
+  .header-side { flex-wrap: nowrap; gap: 6px; }
+  .countdown-pill { padding: 2px 10px; font-size: 0.8rem; }
+  .risk-chip { min-height: 0; padding: 3px 10px; font-size: 0.8rem; white-space: nowrap; }
+}
+
+/* ---------- page ---------- */
+/* Every screen is one centred column of the same width, so nothing jumps when you change tabs. */
+.app-main { max-width: var(--page); margin: 0 auto; padding: 0 16px; }
+.subtle { color: var(--muted); margin: 4px 0 0; font-size: 0.92rem; }
+
+.screen { padding: 4px 0 16px; }
+.screen[hidden] { display: none; }
+.screen h2 { margin: 12px 0 8px; font: 700 1.4rem var(--serif); color: var(--cranberry); display: flex; align-items: center; gap: 8px; }
+/* a small leaf beside each screen title */
+.screen h2::before {
+  content: ""; width: 18px; height: 18px; flex: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 17C3 8 10 3 21 3c0 11-5 18-14 18-1.500 0-3-1.500-4-4z' fill='%23b8480f'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+h3 { font-family: var(--serif); }
+h4 { margin: 10px 0 4px; font-size: 1rem; color: var(--ink); }
+
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 12px 16px; margin-bottom: 12px; box-shadow: 0 1px 0 rgba(120, 70, 20, 0.07);
+}
+.card h3 { margin: 0 0 6px; font-size: 1.05rem; color: var(--accent-dark); }
+.card ul { margin: 0; padding-left: 20px; }
+.ok { color: var(--ok); }
+.error { color: var(--danger); font-weight: 600; }
+
+/* ---------- bottom tab bar ---------- */
+.tab-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; height: var(--tab-h); z-index: 10;
+  display: flex; background: var(--card); border-top: 3px solid var(--gold); box-shadow: 0 -2px 10px rgba(80, 30, 10, 0.12);
+}
+.tab-bar button {
+  flex: 1 1 0; min-width: 0; border: 0; border-radius: 0; background: none; color: var(--muted);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+  font-size: 0.8rem; font-weight: 600; padding: 2px; cursor: pointer;
+}
+.tab-icon { display: inline-flex; line-height: 1; }
+.tab-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tab-bar button[aria-current="page"] { color: var(--accent-dark); font-weight: 700; background: var(--bg-2); box-shadow: inset 0 -3px 0 var(--accent); }
+@media (max-width: 420px) { .tab-bar button { font-size: 0.72rem; } } /* six labels must fit side by side on a phone */
+.tab-bar button:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; }
+@media (min-width: 700px) { .tab-bar button { flex-direction: row; gap: 8px; font-size: 1rem; } }
+
+/* ---------- in-page tabs (segmented control) ---------- */
+.tabs { display: flex; gap: 6px; overflow-x: auto; margin: 4px 0 10px; padding-bottom: 2px; }
+.tab { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; min-height: 44px; padding: 6px 16px; white-space: nowrap; cursor: pointer; font-weight: 600; }
+.tab:hover { background: var(--bg-2); }
+.tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent-dark); color: var(--accent-ink); }
+.tab-count { margin-left: 6px; background: rgba(0, 0, 0, 0.14); border-radius: 10px; padding: 0 7px; font-size: 0.85rem; }
+.tab-off { display: none; }
+/* On a phone every tab stays in view: they wrap onto a second line instead of running off the side. */
+@media (max-width: 520px) {
+  .tabs { flex-wrap: wrap; overflow-x: visible; }
+  .tab { min-height: 40px; padding: 4px 12px; font-size: 0.92rem; }
+}
+
+/* ---------- forms and buttons ---------- */
+input, select, textarea, button { font: inherit; }
+input[type="number"], input[type="text"], input[type="time"], select, textarea {
+  width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid #a88e6c; border-radius: 8px; background: #fff; color: var(--ink);
+}
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
+textarea { resize: vertical; }
+input[type="checkbox"] { width: 24px; height: 24px; flex: none; accent-color: var(--accent); }
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 12px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field-label { font-size: 0.95rem; font-weight: 600; }
+/* In a row of fields, labels that wrap to different lengths must not push their boxes out of line:
+   the label stays at the top and the box drops to the bottom of the (equal-height) row. */
+.fields > .field > .field-label { margin-bottom: auto; }
+.fields > .field > input { height: 46px; }
+.field-hint { font-size: 0.88rem; }
+.checks { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 10px; }
+.check { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+.row.between { justify-content: space-between; margin-top: 0; }
+.row select { width: auto; }
+
+button { min-height: 44px; padding: 8px 16px; border: 1px solid var(--accent-dark); border-radius: 8px; background: var(--accent); color: var(--accent-ink); cursor: pointer; font-weight: 600; }
+button:hover { background: var(--accent-dark); }
+button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+button:disabled { opacity: 0.4; cursor: default; }
+button.danger { background: #fff; color: var(--danger); border-color: var(--danger); }
+button.danger:hover { background: #fdecea; }
+button.link { background: none; border: 0; color: var(--accent-dark); padding: 6px 4px; text-decoration: underline; font-weight: 600; }
+button.link:hover { background: none; color: var(--cranberry); }
+/* A link under a paragraph starts at the paragraph's left edge: cancel the link's own side padding. */
+p + button.link { margin-left: -4px; }
+button.chip { background: var(--bg); color: var(--ink); border-color: var(--line); border-radius: 16px; font-weight: 500; }
+button.chip:hover { background: var(--bg-2); }
+button.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent-dark); }
+/* +/- buttons are outlined, like other secondary buttons: solid orange is kept for a screen's main action. */
+button.step { width: 44px; height: 44px; min-height: 0; padding: 0; font-size: 1.4rem; line-height: 1; border-radius: 50%; background: #fff; color: var(--accent-dark); }
+button.step:hover { background: var(--bg); }
+button.step:disabled { opacity: 0.4; }
+button.big-done { width: 100%; min-height: 60px; font-size: 1.25rem; margin-top: 4px; background: var(--leaf); border-color: #43602a; }
+button.big-done:hover { background: #43602a; }
+.badge { font-size: 0.85rem; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 2px 8px; align-self: center; }
+.badge.edited { background: var(--warn-bg); border-color: var(--warn-line); margin-left: 6px; }
+.badge.guest { margin-left: 8px; background: #e8f1fb; border-color: #a9c7e8; font: 600 0.78rem/1.3 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: var(--ink); white-space: nowrap; }
+.badge.guest[hidden] { display: none; }
+.badge.owner { background: #e8f1fb; border-color: #a9c7e8; margin-left: 6px; }
+
+/* ---------- collapsible cards ---------- */
+details.fold > summary { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; list-style: none; }
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary::after { content: "▾"; margin-left: 8px; color: var(--muted); }
+details.fold[open] > summary::after { content: "▴"; }
+details.fold > summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+.fold-title { font: 700 1.05rem var(--serif); color: var(--accent-dark); }
+.fold-note { margin-left: auto; color: var(--muted); font-size: 0.9rem; }
+details.fold[open] > summary { margin-bottom: 8px; }
+
+/* ---------- setup ---------- */
+.setup-grid { display: grid; grid-template-columns: 1fr; }
+.equipment-row { display: grid; grid-template-columns: auto 1fr 90px auto; gap: 8px; align-items: end; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.cook-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: end; padding: 6px 0; }
+@media (max-width: 520px) {
+  .equipment-row { grid-template-columns: 1fr 80px; }
+  .equipment-row .badge { grid-column: 1 / -1; justify-self: start; }
+  .equipment-row button { grid-column: 1 / -1; }
+}
+
+/* ---------- menu ---------- */
+/* One column at every width. Each dish is one quiet line: name on the left, a short grey summary on the right. */
+.dish-list .dish-group { margin: 22px 0 4px; font-size: 0.9rem; font-family: inherit; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.dish-list .dish-group:first-child { margin-top: 0; }
+button.dish-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto 1em; align-items: center; gap: 2px 12px; width: 100%; min-height: 52px;
+  padding: 8px 4px; background: none; color: var(--ink); border: 0; border-top: 1px solid var(--line); border-radius: 0; text-align: left; font-weight: 400;
+}
+button.dish-row:hover { background: var(--bg); }
+.dish-row-name { font: 700 1.05rem var(--serif); color: var(--accent-dark); }
+.dish-row-info { color: var(--muted); font-size: 0.95rem; text-align: right; }
+.dish-row-arrow { color: var(--muted); font-size: 1.4rem; line-height: 1; text-align: right; }
+@media (max-width: 520px) {
+  /* On a phone the summary always sits under the name, so every row breaks the same way. */
+  button.dish-row { grid-template-columns: minmax(0, 1fr) 1em; }
+  .dish-row-name { grid-column: 1; }
+  .dish-row-info { grid-column: 1; grid-row: 2; text-align: left; }
+  .dish-row-info:empty { display: none; }
+  .dish-row-arrow { grid-column: 2; grid-row: 1 / span 2; }
+}
+.dish-dialog { width: min(520px, 92vw); max-height: 90vh; overflow-y: auto; padding-bottom: 0; }
+.dish-dialog h3 { margin-top: 0; }
+.dish-settings { display: grid; gap: 12px; margin: 12px 0; padding: 12px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; }
+.dish-settings .stepper { margin-top: 0; }
+.dish-settings .stepper > .field-label { flex: 1 1 100%; }
+/* The buttons stay in view while a long recipe scrolls. */
+.dish-dialog-buttons { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 0; background: var(--card); border-top: 1px solid var(--line); }
+button.quiet { background: #fff; color: var(--accent-dark); }
+button.quiet:hover { background: var(--bg); }
+.stepper { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+.count { min-width: 1.5em; text-align: center; font-weight: 700; }
+.count.wide { min-width: 4.5em; }
+.off-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 2px 14px; }
+.off-grid .check { min-height: 44px; }
+.hold { margin-top: 4px; }
+.owners { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.card-dialog { max-width: min(520px, 92vw); border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); color: var(--ink); }
+.card-dialog::backdrop { background: rgba(58, 35, 20, 0.5); }
+.confirm-dialog { max-width: min(460px, 92vw); }
+
+/* ---------- shopping and checklists ---------- */
+.items { list-style: none; margin: 0; padding: 0; }
+.item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px solid var(--line); }
+.item:first-child { border-top: 0; }
+.item-main { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; min-height: 44px; }
+.item-main input { margin-top: 0; }
+.item-text { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; min-width: 0; flex: 1; }
+.item-name { font-weight: 600; overflow-wrap: anywhere; }
+.item-qty { font-size: 0.95rem; color: var(--accent-dark); font-weight: 600; }
+.item.done .item-name, .item.done .item-qty { text-decoration: line-through; color: var(--muted); }
+.item.have { opacity: 0.75; }
+/* shops are listed one under another, never side by side */
+.item > button.link { text-decoration: none; font-weight: 400; font-size: 0.92rem; color: var(--muted); white-space: nowrap; }
+.item > button.link:hover { text-decoration: underline; }
+.store-block { break-inside: avoid; margin-bottom: 10px; }
+.store-block h4 { margin-top: 0; }
+progress { width: 100%; height: 12px; accent-color: var(--leaf); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.add-row { display: grid; grid-template-columns: 2fr 70px 1fr 1fr auto auto; gap: 8px; align-items: center; }
+@media (max-width: 600px) { .add-row { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- schedule ---------- */
+.risks { background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: var(--radius); padding: 8px 14px; margin-bottom: 10px; }
+.risks.has-conflicts { background: #fdecea; border-color: #e0a39c; }
+/* the same arrow as the other folding cards (details.fold) */
+.risks > summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; font-weight: 700; font-family: var(--serif); padding: 10px 0; list-style: none; }
+.risks > summary::-webkit-details-marker { display: none; }
+.risks > summary::after { content: "\25BE"; color: var(--muted); }
+.risks[open] > summary::after { content: "\25B4"; }
+.risks > summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+.risks .conflict-title { margin: 8px 0 2px; font-weight: 700; color: var(--danger); }
+.risks .warning-title { margin: 8px 0 2px; font-weight: 600; }
+.risks ul { margin: 0 0 4px; padding-left: 20px; }
+.hold-fix { margin-top: 6px; }
+.fix-offer { margin: 8px 0; padding: 10px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+.fix-offer p { margin: 0 0 6px; }
+.fix-title { font-weight: 700; }
+.timeline { list-style: none; margin: 0; padding: 0; }
+.tl { display: flex; gap: 10px; padding: 3px 0; border-top: 1px solid var(--line); break-inside: avoid; }
+.tl:first-child { border-top: 0; }
+.tl-time { flex: none; width: 10.5em; font-variant-numeric: tabular-nums; color: var(--ink); font-size: 0.92rem; padding-top: 1px; }
+/* the step name and the "dish · oven · temperature" detail share a line when there is room */
+.tl-body { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; min-width: 0; }
+.tl-body > .subtle { margin: 0; font-size: 0.9rem; }
+/* The Thursday list: one column at every width, the start time in a fixed column, then the job and one grey line. */
+.day .tl { display: block; padding: 0; }
+.day-line { display: grid; grid-template-columns: 4.8em minmax(0, 1fr) 1em; align-items: baseline; gap: 0 14px; width: 100%; min-height: 52px; padding: 8px 4px; }
+button.day-line { background: none; color: var(--ink); border: 0; border-radius: 0; text-align: left; font-weight: 400; }
+button.day-line:hover { background: var(--bg); }
+.day .tl-time { width: auto; padding: 0; text-align: right; font-size: 0.95rem; font-weight: 600; white-space: nowrap; }
+.day-body { display: flex; flex-direction: column; min-width: 0; }
+.day-title { font-weight: 700; }
+.day-detail { color: var(--muted); font-size: 0.92rem; }
+.day-arrow { color: var(--muted); font-size: 1.4rem; line-height: 1; text-align: right; align-self: center; }
+.day .tl.background .day-title { font-weight: 400; color: var(--muted); }
+.day .tl.background { opacity: 1; }
+.day .tl.reminder { background: none; border-left: 0; padding-left: 0; }
+.day .tl.reminder .tl-time { width: auto; }
+.day .tl.reminder .day-line { min-height: 40px; padding: 6px 4px; }
+.day .tl.reminder .day-title { font-weight: 400; font-style: italic; }
+.day .tl.reminder .day-body { border-left: 3px solid var(--gold); padding-left: 8px; }
+.day > .check { margin-top: 8px; border-top: 1px solid var(--line); padding-top: 8px; }
+@media (max-width: 520px) { .day-line { grid-template-columns: 4.3em minmax(0, 1fr) 0.8em; gap: 0 8px; } .day .tl-time { font-size: 0.85rem; } }
+.tl.reminder { background: #fff8e1; padding-left: 8px; border-left: 3px solid var(--gold); }
+.tl.reminder .tl-time { width: 6.5em; }
+.tl.hands_on .tl-body > :first-child, .tl.load .tl-body > :first-child, .tl.unload .tl-body > :first-child { font-weight: 700; }
+.tl.passive { opacity: 0.85; }
+/* one oven under another, each with the same lines as the Thursday list */
+.lanes { display: block; }
+.lane + .lane { margin-top: 18px; }
+.lane h4 { margin-top: 0; }
+@media (max-width: 520px) { .tl-time { width: 7.6em; font-size: 0.85rem; } }
+.person { margin-bottom: 8px; }
+/* Before Thursday: a tick box, then a line that looks like a Thursday line */
+.todo { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: start; border-top: 1px solid var(--line); break-inside: avoid; }
+.todo:first-child { border-top: 0; }
+.todo-tick { display: flex; align-items: center; justify-content: center; min-height: 52px; cursor: pointer; }
+.todo-open { display: grid; grid-template-columns: minmax(0, 1fr) 1em; align-items: center; gap: 0 14px; width: 100%; min-height: 52px; padding: 8px 4px; }
+button.todo-open { background: none; color: var(--ink); border: 0; border-radius: 0; text-align: left; font-weight: 400; }
+button.todo-open:hover { background: var(--bg); }
+.todo-how { margin-top: 2px; }
+.todo.done .day-title { text-decoration: line-through; color: var(--muted); font-weight: 400; }
+/* Cook screen lists show one time, not a range, so the time column is narrow */
+#screen-cook .tl-time { width: auto; min-width: 6em; white-space: nowrap; }
+
+/* one person's page: never on screen, shown only by print.css when that person's page is printed */
+.person-sheet { display: none; }
+
+/* ---------- Cook screen ---------- */
+.print-only { display: none; }
+.cook-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 8px; }
+.cook-clock { margin: 0; font: 700 2.4rem var(--serif); line-height: 1; font-variant-numeric: tabular-nums; color: var(--cranberry); }
+.cook-dinner { text-align: right; display: flex; flex-direction: column; }
+.cook-dinner .countdown { font-size: 1.4rem; font-variant-numeric: tabular-nums; }
+.countdown, .late { font-variant-numeric: tabular-nums; font-weight: 700; }
+.cook-task { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; margin: 8px 0; background: #fff; }
+.cook-task h3 { margin: 0; font-size: 1.35rem; color: var(--ink); }
+.cook-task p { margin: 6px 0; }
+.cook-task-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.cook-task.current { border-left: 6px solid var(--accent); }
+.cook-countdown { font-size: 1.25rem; }
+.overdue-card { border-color: #d9534f; background: #fdecea; }
+.cook-task.overdue { border-color: #d9534f; border-left: 6px solid #d9534f; }
+.overdue-note { color: var(--danger); font-weight: 700; }
+.reminder-banner { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 12px; margin: 8px 0; border-radius: 10px; background: var(--warn-bg); border: 1px solid var(--warn-line); }
+.reminder-banner.soon { background: #e8f1fb; border-color: #a9c7e8; }
+.reminder-banner.probe { background: #fdecea; border-color: #d9534f; }
+.reminder-time { font-weight: 700; }
+.reminder-text { flex: 1 1 14em; }
+.rehearsal { background: #e8f1fb; border: 1px solid #a9c7e8; border-radius: var(--radius); padding: 10px 12px; margin-bottom: 10px; }
+.rehearsal .subtle { display: block; margin: 2px 0; }
+.cook-risk { background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: 10px; padding: 8px 12px; }
+.now-card { border-width: 2px; border-color: var(--accent); }
+.celebrate { position: relative; overflow: hidden; text-align: center; padding: 18px 12px; border-radius: var(--radius); background: linear-gradient(120deg, #fff3cd, #ffe0b3); border: 2px solid var(--gold); }
+.celebrate h3 { margin: 0 0 4px; font-size: 1.4rem; color: var(--cranberry); }
+.celebrate .leaf { position: absolute; top: -20px; width: 14px; height: 14px; border-radius: 0 100% 0 100%; background: var(--accent); animation: leaf-fall 6s linear infinite; }
+.celebrate .leaf:nth-child(2n) { background: var(--gold); }
+.celebrate .leaf:nth-child(3n) { background: var(--cranberry); }
+@keyframes leaf-fall { to { transform: translateY(180px) rotate(300deg); opacity: 0.2; } }
+@media (prefers-reduced-motion: reduce) { .celebrate .leaf { animation: none; top: 6px; } }
+
+/* ---------- "a few questions first" card, pop-up notices, reminder strip ---------- */
+.gate { text-align: center; padding: 24px 16px; }
+.gate .brand-logo { width: 72px; height: 72px; margin: 0 auto 6px; }
+.gate h3 { font-size: 1.4rem; }
+.gate button { min-height: 52px; font-size: 1.1rem; padding: 10px 24px; }
+.unfinished { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; background: var(--warn-bg); border-color: var(--warn-line); }
+.unfinished p { margin: 0; flex: 1 1 16em; }
+.toast {
+  position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--tab-h) + 12px);
+  width: min(560px, calc(100vw - 32px)); max-height: 60vh; overflow: auto;
+  background: var(--card); border: 1px solid var(--line); border-left: 6px solid var(--leaf); border-radius: 10px;
+  padding: 10px 14px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25); z-index: 20;
+}
+.toast.bad { border-left-color: var(--gold); }
+.toast p { margin: 0 0 4px; }
+.toast ul { margin: 0 0 6px; padding-left: 20px; }
+.toast-title { font-weight: 700; }
+.undo-toast { display: flex; align-items: center; gap: 12px; z-index: 30; border-left-color: var(--accent); bottom: calc(var(--tab-h) + 70px); }
+.undo-toast .undo-text { flex: 1; font-weight: 600; }
+.banner { max-width: var(--page); margin: 8px auto 0; padding: 0 16px; }
+.banner p { margin: 0 0 6px; padding: 8px 12px; background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: 8px; }
+/* On a phone the reminder is smaller, and the Cook screen leaves it out: on the day, the jobs come first. */
+@media (max-width: 520px) {
+  .banner p { padding: 5px 10px; font-size: 0.85rem; line-height: 1.35; }
+  body[data-screen="cook"] .banner { display: none; }
+}
+
+/* ---------- the first questions ---------- */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+/* the questions fill the page: no bottom buttons, reminders or pop-ups until they are answered */
+body.guide-mode { padding-bottom: 24px; }
+body.guide-mode .tab-bar, body.guide-mode .banner, body.guide-mode .risk-chip, body.guide-mode .toast { display: none !important; }
+.guide { max-width: 680px; margin: 0 auto; }
+.guide-progress { margin: 10px 0 6px; }
+.guide-step-label { margin: 0 0 6px; font-weight: 700; color: var(--accent-dark); }
+.guide-dots { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.guide-dots li { flex: 1; height: 6px; border-radius: 3px; background: var(--line); }
+.guide-dots li.done { background: var(--leaf); }
+.guide-dots li.current { background: var(--accent); }
+.guide-card { padding: 20px 22px; }
+.guide-card h3 { margin: 0 0 6px; font-size: 1.5rem; color: var(--cranberry); }
+.guide-card h3:focus { outline: none; }
+.guide-intro { margin: 0 0 14px; font-size: 1.05rem; }
+/* a tagline directly under a step's title: lighter and larger than body text */
+.guide-subtitle { margin: -2px 0 16px; font: italic 1.2rem var(--serif); color: var(--accent-dark); }
+.guide-block { margin: 14px 0; }
+.guide-block h4, .guide-callout h4, .guide-col h4 { margin: 0 0 6px; }
+.guide-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 480px) { .guide-pair { grid-template-columns: 1fr; } }
+.big-number { display: flex; flex-direction: column; gap: 6px; }
+.big-number-row { display: flex; align-items: center; gap: 10px; }
+.big-number-row input { width: 5.5em; text-align: center; font-size: 1.5rem; font-weight: 700; padding: 8px 4px; }
+.big-number-row button.step { width: 44px; height: 44px; font-size: 1.5rem; }
+.guide-live { margin: 8px 0 0; color: var(--muted); }
+.guide-list { margin: 8px 0 14px; padding-left: 24px; font-size: 1.05rem; }
+.guide-list li { margin: 6px 0; }
+.choice-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0; }
+button.chip.choice { min-height: 44px; min-width: 56px; padding: 8px 18px; font-size: 1.05rem; }
+.guide-time input { width: auto; font-size: 1.2rem; margin-top: 4px; }
+.guide-fold { margin: 12px 0; }
+/* A closed question that looks like something to press: a bordered bar with an arrow at the end. */
+/* "Add a dish" is a button and the guest question is a fold, but they share one look so they read as a pair. */
+.guide-fold > summary, button.guide-bar {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; padding: 8px 14px; cursor: pointer; list-style: none;
+  font: inherit; font-weight: 600; text-align: left;
+  color: var(--accent-dark); background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+}
+button.guide-bar::after { content: "+"; margin-left: auto; font-size: 1.4rem; line-height: 1; }
+button.guide-bar:hover { color: var(--accent-dark); }
+.guide-fold { margin-top: 8px; }
+.guide-fold > summary::-webkit-details-marker { display: none; }
+.guide-fold > summary::after { content: "▾"; margin-left: auto; font-size: 1.2rem; }
+.guide-fold[open] > summary::after { content: "▴"; }
+.guide-fold > summary:hover, button.guide-bar:hover { background: var(--bg-2); }
+.guide-fold > summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.guide-fold > summary .fold-note { margin-left: auto; font-weight: 400; }
+.guide-fold > summary:has(.fold-note)::after { margin-left: 0; }
+.guide-fold[open] > summary { margin-bottom: 8px; }
+.add-dish { width: min(560px, 94vw); max-height: 90vh; overflow-y: auto; }
+.shop-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.guide-callout { margin: 14px 0; padding: 12px 14px; border-radius: var(--radius); background: #eef4fb; border: 1px solid #c3d6ec; }
+.guide-callout.good { background: #edf6ee; border-color: #bcd9c1; }
+.guide-callout p { margin: 4px 0; }
+.guide-callout ul { margin: 4px 0; padding-left: 20px; }
+.guide-names { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 8px 0; }
+.guide-menu { display: block; }
+.guide-menu-group { break-inside: avoid; margin-bottom: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.guide-menu-group > summary { display: flex; align-items: baseline; gap: 10px; cursor: pointer; list-style: none; }
+.guide-menu-group > summary::-webkit-details-marker { display: none; }
+/* the "2 of 3" count sits at the right edge, just before the arrow, so the counts line up down the page */
+.guide-menu-group > summary::after { content: "▾"; margin-left: 0; color: var(--muted); }
+.guide-menu-group > summary .fold-note { margin-left: auto; min-width: 4em; text-align: right; font-variant-numeric: tabular-nums; }
+.guide-menu-group[open] > summary::after { content: "▴"; }
+.guide-menu-group .check { min-height: 44px; }
+.guide-summary { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 8px 0 14px; }
+.guide-summary dt { font-weight: 700; color: var(--accent-dark); }
+.guide-summary dd { margin: 0; display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.guide-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 8px 0 12px; }
+.guide-col { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; }
+.guide-col ul, .guide-tips { margin: 0; padding-left: 20px; }
+.guide-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 8px 0; }
+.guide-links button.link { padding-left: 0; }
+/* Back and Next stay at the bottom of the window while the question scrolls */
+.guide-nav {
+  display: flex; justify-content: space-between; gap: 12px;
+  position: sticky; bottom: 0; z-index: 3;
+  margin: 18px -22px -20px; padding: 12px 22px;
+  background: var(--card); border-top: 1px solid var(--line); border-radius: 0 0 var(--radius) var(--radius);
+}
+.guide-nav button { min-height: 52px; padding: 10px 24px; font-size: 1.1rem; }
+.guide-nav button:only-child { margin-left: auto; }
+.guide-error { margin: 12px 0 0; }
+.guide-note { margin-top: 12px; text-align: center; }
+.guide-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 8px 0; }
+.guide-tile { margin: 0; display: flex; flex-direction: column; align-items: flex-start; }
+.guide-tile h4 { margin: 0 0 4px; }
+.guide-tile p { margin: 0 0 14px; }
+.guide-tile button { margin-top: auto; }
+.guide-tips { margin: 10px 0; }
+
+/* ---------- titles that only show on paper (print.css does the rest) ---------- */
+.print-title { margin: 0; }

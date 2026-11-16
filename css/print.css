@@ -1,0 +1,81 @@
+/* Paper. Black and white only, so nothing depends on colour.
+   Schedule: page 1 is what to do before Thursday, page 2 is Thursday, page 3 (only with helpers) is who
+   does what. "Things to check" prints above them. Shopping prints every part of the list. */
+
+@page { margin: 14mm; }
+
+/* Hide everything that is for the screen only */
+.tab-bar, .print-hide, .banner, #countdown, .risk-chip, .toast, dialog, .unfinished,
+.hold-fix, .rehearsal, button, .chips, .add-row { display: none !important; }
+/* ...except step names, which are buttons on screen but plain text on paper */
+.tl-body button.link, .item-name button.link {
+  display: inline !important; border: 0; background: none; color: #000; text-decoration: none; padding: 0; font-weight: 600;
+}
+
+/* ...and the Thursday lines, which are whole-row buttons on screen */
+button.day-line { display: grid !important; border: 0; background: none; color: #000; }
+.day-line { min-height: 0; padding: 2px 0; }
+.day-arrow { display: none; }
+button.todo-open { display: grid !important; border: 0; background: none; color: #000; }
+.todo-open { min-height: 0; padding: 2px 0; }
+.todo-tick { min-height: 0; padding-top: 3px; }
+.todo { border-top: 1px solid #999; }
+.todo input[type="checkbox"] { width: 14px; height: 14px; }
+.print-page .todo-how { display: none; }
+.day { max-width: none; }
+.day-detail { color: #000; }
+
+/* Tabs inside a screen: print every panel, one after another. A panel marked print-skip is left out
+   (the oven view repeats what the Thursday list already says). */
+.tabs, .app-header::after, .about, progress { display: none !important; }
+.tab-off { display: block !important; }
+.print-skip { display: none !important; }
+.app-header { background: none; color: #000; box-shadow: none; border-bottom: 2px solid #000; }
+.app-header-inner { padding: 0 0 4px; }
+.brand-name { color: #000; text-shadow: none; }
+.brand-tag { color: #000; }
+.header-side { display: none; }
+.store-cols { columns: 2; }
+details.risks > * { display: block !important; }
+
+/* Printing one person's page: show only their sheet and hide the rest of the Schedule screen */
+body.print-one-person #screen-schedule .screen-body > div > :not(.person-sheet.printing) { display: none !important; }
+.person-sheet.printing { display: block !important; }
+.person-sheet h3 { margin: 10px 0 4px; }
+
+html { font-size: 100%; }
+body { background: #fff; color: #000; padding-bottom: 0; font-size: 11pt; line-height: 1.3; }
+.app-header, .app-main { max-width: none; padding: 0; }
+.app-header h1 { font-size: 15pt; }
+.print-only { display: block !important; }
+.print-title { font-weight: 700; font-size: 12pt; margin: 0 0 8px; }
+h2 { display: none; }               /* the screen title; each card has its own heading */
+.card, .risks { border: 0; padding: 0; margin: 0 0 8px; background: none; break-inside: avoid-page; }
+.risks { border: 1.5px solid #000; padding: 6px 8px; }
+.risks h3, .risks .conflict-title { color: #000; }
+h3 { font-size: 12pt; margin: 0 0 4px; }
+h4 { font-size: 10.5pt; color: #000; margin: 6px 0 2px; }
+.subtle, .item-qty { color: #000; }
+
+/* One page each */
+#screen-schedule .tab-panel + .tab-panel { break-before: page; page-break-before: always; }
+
+/* Thursday list: tight rows. Waiting time is in italics because paper has no grey. */
+.timeline { margin: 0; }
+.tl { break-inside: avoid; padding: 2px 0; gap: 8px; border-top: 1px solid #999; }
+.tl-time { width: 11em; color: #000; font-size: 9.5pt; }
+.tl.reminder { background: none; border-left: 3px solid #000; padding-left: 6px; font-style: italic; }
+.tl.passive { opacity: 1; font-style: italic; }
+.tl .badge, .badge { border: 1px solid #000; background: none; color: #000; font-size: 8.5pt; }
+
+/* Lists with tick boxes: leave out the long instructions so each fits on one page */
+.print-page .item-text .subtle { display: none; }
+.item { padding: 3px 0; break-inside: avoid; border-top: 1px solid #999; }
+.item input[type="checkbox"] { width: 14px; height: 14px; }
+.item.done .item-name, .item.done .item-qty { text-decoration: line-through; color: #000; }
+.item.have { opacity: 1; }
+details { display: block; }
+details > summary { font-weight: 700; }
+
+/* The Thanksgiving day screen is meant for a phone, but it should not print badly */
+#screen-cook .cook-task, #screen-cook .reminder-banner { break-inside: avoid; border: 1px solid #000; }
